@@ -17,8 +17,7 @@ export class HeaderComponent implements OnInit {
   constructor(private authService:AuthService , private router: Router) {}
 
   ngOnInit() {
-    const userData = this.authService.getUserData();
-    this.userName = userData['userName'];
+    this.userName = this.authService.userDataChanged.value['userName'];
   }
 
   onHeaderClick() {

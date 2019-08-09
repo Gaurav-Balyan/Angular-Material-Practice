@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
       res => {
         if (res.token!= 'Invalid User!') {
           this.authService.setUserData(res);
+          
           localStorage.setItem('ACCESS_TOKEN', res.token);
           this.router.navigateByUrl('/cards');
         }

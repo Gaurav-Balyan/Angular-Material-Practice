@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserLogin } from '../shared/models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { LOGINURL } from '../shared/constants';
 
@@ -9,7 +10,8 @@ import { LOGINURL } from '../shared/constants';
   providedIn: 'root'
 })
 export class AuthService {
-  private user = {};
+  // Need BehaviorSubject to broadcast this information through the app
+  public userDataChanged = new BehaviorSubject(undefined);
 
   constructor(private http: HttpClient) { 
     
@@ -19,12 +21,8 @@ export class AuthService {
     return this.http.post(LOGINURL, userLoginData);
   }
 
-  setUserData(user) {
-    this.user = user;
-  }
-
-  getUserData() {
-    return { ...this.user };
+  setUserData(userData) {
+    this.userDataChanged.next(userData);
   }
 
   forgetPassword(email: string) {

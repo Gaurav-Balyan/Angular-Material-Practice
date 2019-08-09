@@ -14,7 +14,6 @@ import { AuthService } from './auth.service';
 export class NavService implements OnInit {
   currentUrl = new BehaviorSubject<string>(undefined);
   private selectedNavItem: NavItem;
-  private userId: string;
 
   constructor(private router: Router, private http: HttpClient, private authService: AuthService) {
     this.router.events.subscribe((event: Event) => {
@@ -29,9 +28,8 @@ export class NavService implements OnInit {
   }
 
   getMenu(): Observable<any> {
-    const userData = this.authService.getUserData();
-    this.userId = userData['userId'];
-    return this.http.get(`${MENUURL}${this.userId}`);
+    const {userId} = this.authService.userDataChanged.value;
+    return this.http.get(`${MENUURL}${userId}`);
   }
 
   setSelectedNavItem(navItem: NavItem) {
